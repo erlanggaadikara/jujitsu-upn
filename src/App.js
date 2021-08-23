@@ -1,15 +1,22 @@
-import logo from "./logo.svg";
-import Spinner from "component/Spinner";
 import "./App.css";
 import Prerender from "component/Prerender";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import { Router } from "@reach/router";
+import { LocalizationProvider } from "@material-ui/lab";
+import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 
 const Landing = Prerender(() => import("page/landing"));
+const Daftar = Prerender(() => import("page/form/Daftar"));
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Landing />
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <Router>
+          <Landing path="/" />
+          <Daftar path="/Daftar" />
+        </Router>
+      </LocalizationProvider>
     </ThemeProvider>
   );
 }

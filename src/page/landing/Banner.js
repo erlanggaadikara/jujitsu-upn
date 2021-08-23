@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { Box, Typography, Button } from "@material-ui/core";
+import { navigate } from "@reach/router";
 
 export default observer(() => {
   return (
@@ -45,7 +46,13 @@ export default observer(() => {
           }}
         >
           <Box sx={{ width: { laptop: "50%" } }}>
-            <Button variant="contained" color="primary" fullWidth size="large">
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              size="large"
+              onClick={() => navigate("/Daftar")}
+            >
               Daftar
             </Button>
           </Box>
