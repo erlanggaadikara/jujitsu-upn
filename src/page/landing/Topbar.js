@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Box, Typography } from "@material-ui/core";
-import { Link } from "@reach/router";
+import { Box, Typography, Link } from "@material-ui/core";
 
 export default observer(() => {
   return (
@@ -19,9 +18,9 @@ export default observer(() => {
         variant="h6"
         sx={{ color: "primary.light", mx: 2, fontWeight: "bold" }}
       >
-        Profil
+        Blog
       </Typography>
-      <Link to="/Daftar">
+      <Link href="/Daftar">
         <Typography
           variant="h6"
           sx={{ color: "primary.light", mx: 3, fontWeight: "bold" }}

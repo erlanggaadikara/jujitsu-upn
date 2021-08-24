@@ -8,6 +8,7 @@ import Topbar from "page/landing/Topbar";
 import Banner from "page/landing/Banner";
 import Kegiatan from "page/landing/Kegiatan";
 import Counter from "page/landing/Counter";
+import Blog from "page/landing/Blog";
 
 export default observer(() => {
   const meta = useLocalObservable(() => ({
@@ -41,7 +42,25 @@ export default observer(() => {
       <Banner />
       <Counter position={Number(meta.position)} />
       <Kegiatan />
-      <Spinner />
+      <Blog />
+      <Box
+        sx={{
+          position: "relative",
+          bottom: 0,
+          width: "100vw",
+          alignContent: "center",
+          py: 2,
+          mt: 10,
+          color: "primary.main",
+        }}
+      >
+        <Typography variant="body2" sx={{ textAlign: "center" }}>
+          Copyright © 2021 | All Right Reserved
+        </Typography>
+        <Typography variant="body2" sx={{ textAlign: "center" }}>
+          Unit Kegiatan Mahasiswa Jujitsu - UPN "Veteran" Jawa Timur
+        </Typography>
+      </Box>
     </Box>
   );
 });
