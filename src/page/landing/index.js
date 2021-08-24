@@ -17,7 +17,6 @@ export default observer(() => {
 
   const handleScroll = action(() => {
     const getPosition = window.pageYOffset;
-    console.log(getPosition);
     meta.position = getPosition;
   });
 
@@ -36,7 +35,7 @@ export default observer(() => {
     >
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Honeybadger</title>
+        <title>Jujitsu UPN</title>
       </Helmet>
       <Topbar />
       <Banner />

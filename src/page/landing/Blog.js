@@ -19,7 +19,7 @@ export default observer(() => {
         variant="h3"
         sx={{ color: "primary.light", fontWeight: "bold" }}
       >
-        Berita & Blog
+        Berita & Blog (Coming Soon)
       </Typography>
       <Carousel
         autoPlay

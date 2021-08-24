@@ -1,4 +1,6 @@
-import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
+import { observer, useLocalObservable } from "mobx-react-lite";
+import { runInAction, toJS } from "mobx";
 import {
   Box,
   Typography,
@@ -12,6 +14,38 @@ import { Carousel } from "react-responsive-carousel";
 
 export default observer(() => {
   const isMobile = useMediaQuery("(max-width:640px)");
+  const meta = useLocalObservable(() => ({
+    arr: [],
+    kegiatan: [],
+  }));
+
+  useEffect(() => {
+    const fetch = async () => {
+      const kegiatan = await import("sample/kegiatan");
+      if (kegiatan) {
+        const arrKegiatan = kegiatan.default;
+        let currentArr = [];
+        let initArr = [];
+
+        for (let x in arrKegiatan) {
+          initArr.push(arrKegiatan[x]);
+          if (initArr.length === 4) {
+            currentArr.push(initArr);
+            initArr = [];
+          }
+        }
+        console.log(currentArr);
+
+        runInAction(() => {
+          meta.arr = currentArr;
+          meta.kegiatan = arrKegiatan;
+        });
+      }
+    };
+
+    fetch();
+  }, []);
+
   return (
     <Box sx={{ textAlign: "center", mt: 10, position: "relative" }}>
       <Typography
@@ -31,37 +65,31 @@ export default observer(() => {
         centerMode
       >
         {isMobile
-          ? [0, 0, 0, 0].map((item) => (
-              <Box sx={{ display: "flex", flexDirection: "row", mt: 1, p: 5 }}>
+          ? meta.kegiatan.map((item) => (
+              <Box
+                key={item}
+                sx={{ display: "flex", flexDirection: "row", mt: 1, p: 5 }}
+              >
                 <Content
-                  src="asset/image/luwak.jpg"
-                  title="Latihan Rutin"
-                  description="Setiap Senin dan Rabu Setiap Senin dan Rabu Setiap Senin dan Rabu Setiap Senin dan Rabu"
+                  src={item.img}
+                  title={item.nama}
+                  description={item.desc}
                 />
               </Box>
             ))
-          : [0, 0].map(() => (
-              <Box sx={{ display: "flex", flexDirection: "row", mt: 1, p: 5 }}>
-                <Content
-                  src="asset/image/luwak.jpg"
-                  title="Latihan Rutin"
-                  description="Setiap"
-                />
-                <Content
-                  src="asset/image/luwak.jpg"
-                  title="Latihan Rutin"
-                  description="Setiap Senin dan Rabu Setiap Senin dan Rabu Setiap Senin dan Rabu Setiap Senin dan Rabu"
-                />
-                <Content
-                  src="asset/image/luwak.jpg"
-                  title="Latihan Rutin"
-                  description="Setiap Senin dan Rabu Setiap Senin dan Rabu Setiap Senin dan Rabu Setiap Senin dan Rabu"
-                />
-                <Content
-                  src="asset/image/luwak.jpg"
-                  title="Latihan Rutin"
-                  description="Setiap Senin dan Rabu Setiap Senin dan Rabu Setiap Senin dan Rabu Setiap Senin dan Rabu"
-                />
+          : meta.arr.map((item) => (
+              <Box
+                key={item}
+                sx={{ display: "flex", flexDirection: "row", mt: 1, p: 5 }}
+              >
+                {item.map((items) => (
+                  <Content
+                    key={items}
+                    src={items.img}
+                    title={items.nama}
+                    description={items.desc}
+                  />
+                ))}
               </Box>
             ))}
       </Carousel>

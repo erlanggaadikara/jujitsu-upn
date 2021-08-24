@@ -25,7 +25,7 @@ export default observer(() => {
             fontWeight: "bold",
           }}
         >
-          Kepak sayap Jujitsan
+          Born To Be Fighter!
         </Typography>
         <Box
           sx={{
@@ -34,7 +34,7 @@ export default observer(() => {
             my: 3,
           }}
         >
-          {/* Bergabung bersama kami dan siapkan dirimu menjadi Jujitsan sejati! */}
+          Bergabung bersama kami dan siapkan dirimu menjadi Jujitsan sejati!
         </Box>
         <Box
           sx={{
@@ -45,7 +45,7 @@ export default observer(() => {
             mt: { laptop: 30, mobile: 10 },
           }}
         >
-          <Box sx={{ width: { laptop: "50%" } }}>
+          {/* <Box sx={{ width: { laptop: "50%" } }}>
             <Button
               variant="contained"
               color="primary"
@@ -55,9 +55,19 @@ export default observer(() => {
             >
               Daftar
             </Button>
-          </Box>
+          </Box> */}
           <Box sx={{ width: { laptop: "46%" }, my: 1 }}>
-            <Button variant="outlined" color="primary" fullWidth size="large">
+            <Button
+              variant="outlined"
+              color="primary"
+              fullWidth
+              size="large"
+              onClick={() => {
+                window.open(
+                  "https://wa.me/6282217401318/?text=Halo kak, mau tanya tanya jujitsu upn"
+                );
+              }}
+            >
               Hubungi Kami
             </Button>
           </Box>

@@ -20,10 +20,11 @@ import {
 } from "@material-ui/core";
 import { MobileDatePicker } from "@material-ui/lab";
 import { toBase64 } from "utils/formatFile";
+import UploadIcon from "@material-ui/icons/Upload";
 
 export default observer(() => {
   const meta = useLocalObservable(() => ({
-    photo: "asset/image/upload.png",
+    photo: "",
   }));
   const validationSchema = yup.object({
     email: yup.string().email("Enter a valid email").required("Mohon diisi"),
@@ -324,7 +325,24 @@ export default observer(() => {
                 onChange={setFileToUpload}
               />
               <CardActionArea onClick={() => FileInput.current.click()}>
-                <CardMedia sx={{ height: 200 }} image={meta.photo} />
+                {!meta.photo ? (
+                  <Box
+                    sx={{
+                      height: 200,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <UploadIcon fontSize="large" />
+                    <Typography variant="caption">
+                      Upload Image (".png, .jpg")
+                    </Typography>
+                  </Box>
+                ) : (
+                  <CardMedia sx={{ height: 200 }} image={meta.photo} />
+                )}
               </CardActionArea>
             </Card>
           </Box>
