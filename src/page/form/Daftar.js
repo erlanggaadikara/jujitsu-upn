@@ -1,5 +1,5 @@
 import { observer, useLocalObservable } from "mobx-react-lite";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { action } from "mobx";
 import { Helmet } from "react-helmet";
 import { useFormik } from "formik";
@@ -21,42 +21,59 @@ import {
 import { MobileDatePicker } from "@material-ui/lab";
 import { toBase64 } from "utils/formatFile";
 import UploadIcon from "@material-ui/icons/Upload";
+import Top from "component/Top";
+import { Post, Get } from "utils/api";
+import useSWR from "swr";
 
 export default observer(() => {
   const meta = useLocalObservable(() => ({
     photo: "",
+    listjurusan: [],
+    async getjurusan() {
+      const data = await Get("/jurusan");
+      console.log(data);
+      this.listjurusan = data;
+    },
   }));
+
+  useEffect(() => {
+    const getjurusan = async () => {
+      const data = await Get("/jurusan");
+      console.log(data);
+    };
+
+    getjurusan();
+  }, []);
+
   const validationSchema = yup.object({
-    email: yup.string().email("Enter a valid email").required("Mohon diisi"),
     nama: yup.string().required("Mohon diisi"),
-    npm: yup.string().required("Mohon diisi"),
-    tempatLahir: yup.string().required("Mohon diisi"),
-    tanggalLahir: yup.string().required("Mohon diisi"),
+    npm: yup.number().required("Mohon diisi"),
+    tempatlahir: yup.string().required("Mohon diisi"),
+    tanggallahir: yup.string().required("Mohon diisi"),
     alamat: yup.string().required("Mohon diisi"),
-    jenisKelamin: yup.string().required("Mohon diisi"),
-    noHp: yup.string().required("Mohon diisi"),
-    fakultas: yup.string().required("Mohon diisi"),
-    jurusan: yup.string().required("Mohon diisi"),
+    nohp: yup.string().required("Mohon diisi"),
+    jurusan: yup.number().required("Mohon diisi"),
   });
 
   const formik = useFormik({
     initialValues: {
-      email: "",
       nama: "",
       npm: "",
-      tempatLahir: "",
-      tanggalLahir: new Date(),
+      tempatlahir: "",
+      tanggallahir: new Date(),
       alamat: "",
-      jenisKelamin: "",
-      noHp: "",
-      fakultas: "",
-      jurusan: "",
-      domisili: "",
-      asal: "",
+      nohp: "",
+      jurusan_id: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      Post("/register_member", {
+        ...values,
+        password: values.npm,
+        foto: meta.photo,
+      })
+        .then((res) => console.log(res))
+        .catch((e) => console.log(e));
     },
   });
 
@@ -65,13 +82,18 @@ export default observer(() => {
     const file = e.target.files[0];
     if (file) {
       const type = file.type != "" ? file.type : null;
-      toBase64(file).then(
-        action((result) => {
-          let respon = result.split(",");
-          meta.photo =
-            respon && respon[1] ? `data:${type};base64,${respon[1]}` : "";
-        })
-      );
+      const fmtFile = type.split("/");
+      if (["png", "jpg", "jpeg"].includes(fmtFile[1])) {
+        toBase64(file).then(
+          action((result) => {
+            let respon = result.split(",");
+            meta.photo =
+              respon && respon[1] ? `data:${type};base64,${respon[1]}` : "";
+          })
+        );
+      } else {
+        alert("Format file tidak didukung");
+      }
     }
   });
 
@@ -83,7 +105,6 @@ export default observer(() => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
         overflowY: "auto",
         py: 2,
       }}
@@ -93,6 +114,7 @@ export default observer(() => {
         <title>Daftar</title>
         <meta name="description" content="Daftar Anggota Baru" />
       </Helmet>
+      <Top removeDaftar />
       <Box
         component="form"
         sx={{
@@ -118,19 +140,6 @@ export default observer(() => {
           }}
         >
           <Box sx={{ width: { laptop: "45%", mobile: "100%" } }}>
-            <TextField
-              label="Email *"
-              type="email"
-              name="email"
-              variant="outlined"
-              color="primary"
-              fullWidth
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-              sx={{ mb: 1 }}
-            />
             <TextField
               label="Nama *"
               name="nama"
@@ -163,18 +172,18 @@ export default observer(() => {
             >
               <TextField
                 label="Tempat Lahir *"
-                name="tempatLahir"
+                name="tempatlahir"
                 variant="outlined"
                 color="primary"
                 fullWidth
-                value={formik.values.tempatLahir}
+                value={formik.values.tempatlahir}
                 onChange={formik.handleChange}
                 error={
                   formik.touched.tempatLahir &&
-                  Boolean(formik.errors.tempatLahir)
+                  Boolean(formik.errors.tempatlahir)
                 }
                 helperText={
-                  formik.touched.tempatLahir && formik.errors.tempatLahir
+                  formik.touched.tempatlahir && formik.errors.tempatlahir
                 }
                 sx={{ my: 1, mr: 1 }}
               />
@@ -183,7 +192,7 @@ export default observer(() => {
                 inputFormat="MM/dd/yyyy"
                 value={formik.values.tanggalLahir}
                 onChange={(value) => {
-                  formik.setFieldValue("tanggalLahir", value);
+                  formik.setFieldValue("tanggallahir", value);
                 }}
                 renderInput={(params) => (
                   <TextField
@@ -209,66 +218,22 @@ export default observer(() => {
               helperText={formik.touched.alamat && formik.errors.alamat}
               sx={{ my: 1 }}
             />
-            <FormControl
-              fullWidth
-              sx={{ my: 1 }}
-              error={
-                formik.touched.jenisKelamin &&
-                Boolean(formik.errors.jenisKelamin)
-              }
-              helperText={
-                formik.touched.jenisKelamin && formik.errors.jenisKelamin
-              }
-            >
-              <InputLabel>Jenis Kelamin *</InputLabel>
-              <Select
-                label="Jenis Kelamin  *"
-                name="jenisKelamin"
-                value={formik.values.jenisKelamin}
-                onChange={formik.handleChange}
-                color="primary"
-              >
-                <MenuItem value={"Laki-laki"}>Laki-laki</MenuItem>
-                <MenuItem value={"Perempuan"}>Perempuan</MenuItem>
-              </Select>
-            </FormControl>
+          </Box>
+          <Box sx={{ width: { laptop: "45%", mobile: "100%" } }}>
             <TextField
               label="No Handphone/Whatsapp  *"
-              name="noHp"
+              name="nohp"
               variant="outlined"
               color="primary"
               fullWidth
               multiline
               maxRows={4}
-              value={formik.values.noHp}
+              value={formik.values.nohp}
               onChange={formik.handleChange}
-              error={formik.touched.noHp && Boolean(formik.errors.noHp)}
-              helperText={formik.touched.noHp && formik.errors.noHp}
+              error={formik.touched.nohp && Boolean(formik.errors.nohp)}
+              helperText={formik.touched.nohp && formik.errors.nohp}
               sx={{ my: 1 }}
             />
-          </Box>
-          <Box sx={{ width: { laptop: "45%", mobile: "100%" } }}>
-            <FormControl
-              fullWidth
-              sx={{ mb: 1 }}
-              error={formik.touched.fakultas && Boolean(formik.errors.fakultas)}
-              helperText={formik.touched.fakultas && formik.errors.fakultas}
-            >
-              <InputLabel id="demo-simple-select-helper-label">
-                Fakultas *
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-helper-label"
-                label="Fakultas *"
-                name="fakultas"
-                value={formik.values.fakultas}
-                onChange={formik.handleChange}
-                color="primary"
-              >
-                <MenuItem value={"Laki-laki"}>Fasilkom</MenuItem>
-                <MenuItem value={"Perempuan"}>FEB</MenuItem>
-              </Select>
-            </FormControl>
             <FormControl
               fullWidth
               sx={{ my: 1 }}
@@ -290,30 +255,6 @@ export default observer(() => {
                 <MenuItem value={"Perempuan"}>Manajemen</MenuItem>
               </Select>
             </FormControl>
-            <TextField
-              label="Domisili"
-              name="Domisili"
-              variant="outlined"
-              color="primary"
-              fullWidth
-              multiline
-              maxRows={4}
-              value={formik.values.domisili}
-              onChange={formik.handleChange}
-              sx={{ my: 1 }}
-            />
-            <TextField
-              label="Asal"
-              name="asal"
-              variant="outlined"
-              color="primary"
-              fullWidth
-              multiline
-              maxRows={4}
-              value={formik.values.asal}
-              onChange={formik.handleChange}
-              sx={{ my: 1 }}
-            />
             <Typography variant="body1" sx={{ textAlign: "left", my: 1 }}>
               Upload Foto
             </Typography>

@@ -45,7 +45,7 @@ export default observer(() => {
             mt: { laptop: 30, mobile: 10 },
           }}
         >
-          {/* <Box sx={{ width: { laptop: "50%" } }}>
+          <Box sx={{ width: { laptop: "50%" } }}>
             <Button
               variant="contained"
               color="primary"
@@ -55,7 +55,7 @@ export default observer(() => {
             >
               Daftar
             </Button>
-          </Box> */}
+          </Box>
           <Box sx={{ width: { laptop: "46%" }, my: 1 }}>
             <Button
               variant="outlined"
@@ -74,7 +74,12 @@ export default observer(() => {
         </Box>
       </Box>
       <Box sx={{ my: 2, mx: 20, width: { laptop: "50%" } }}>
-        <img src="asset/image/favicon.png" width={"100%"} height={"100%"} />
+        <img
+          src="asset/image/favicon.png"
+          width={"100%"}
+          height={"85%"}
+          alt="logo-jujitsu-upn"
+        />
       </Box>
     </Box>
   );

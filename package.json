@@ -29,6 +29,7 @@
     "react-prerendered-component": "^1.2.4",
     "react-responsive-carousel": "^3.2.21",
     "react-scripts": "4.0.3",
+    "react-transition-group": "^4.4.2",
     "web-vitals": "^1.0.1",
     "yup": "^0.32.9"
   },

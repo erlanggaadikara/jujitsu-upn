@@ -66,14 +66,14 @@ export default observer(() => {
               </Box>
             ))}
       </Carousel>
-      <Link>
+      {/* <Link>
         <Typography
           variant="h6"
           sx={{ color: "primary.light", mx: 3, fontWeight: "lighter" }}
         >
           Selengkapnya
         </Typography>
-      </Link>
+      </Link> */}
     </Box>
   );
 });

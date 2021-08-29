@@ -11,6 +11,7 @@ import {
   useMediaQuery,
 } from "@material-ui/core";
 import { Carousel } from "react-responsive-carousel";
+import { navigate } from "@reach/router";
 
 export default observer(() => {
   const isMobile = useMediaQuery("(max-width:640px)");
@@ -34,12 +35,12 @@ export default observer(() => {
             initArr = [];
           }
         }
-        console.log(currentArr);
 
         runInAction(() => {
           meta.arr = currentArr;
           meta.kegiatan = arrKegiatan;
         });
+        console.log(toJS(meta.arr));
       }
     };
 
@@ -72,6 +73,7 @@ export default observer(() => {
               >
                 <Content
                   src={item.img}
+                  slug={item.slug}
                   title={item.nama}
                   description={item.desc}
                 />
@@ -86,6 +88,7 @@ export default observer(() => {
                   <Content
                     key={items}
                     src={items.img}
+                    slug={items.slug}
                     title={items.nama}
                     description={items.desc}
                   />
@@ -97,10 +100,10 @@ export default observer(() => {
   );
 });
 
-const Content = ({ src, title, description }) => {
+const Content = ({ src, title, slug, description }) => {
   return (
     <Card sx={{ width: 345, bgcolor: "bg.main", mx: 2 }} raised>
-      <CardActionArea>
+      <CardActionArea onClick={() => navigate("/Blog/" + slug)}>
         <CardMedia sx={{ height: 140 }} image={src} />
         <CardContent sx={{ bgcolor: "bg.main" }}>
           <Typography
