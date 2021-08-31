@@ -5,3 +5,5 @@ export const toBase64 = (file) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
+
+export const base64Image = (type, base64) => `data:${type};base64,${base64}`;

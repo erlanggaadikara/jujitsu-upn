@@ -1,5 +1,5 @@
 import { observer, useLocalObservable } from "mobx-react-lite";
-import { Box, Typography, Button, CardMedia, Link } from "@material-ui/core";
+import { Box, Typography, CardMedia } from "@material-ui/core";
 import { useParams } from "@reach/router";
 import { runInAction } from "mobx";
 import { Helmet } from "react-helmet";

@@ -14,12 +14,12 @@ export default observer(() => {
         justifyContent: "flex-end",
       }}
     >
-      <Typography
+      {/* <Typography
         variant="h6"
         sx={{ color: "primary.light", mx: 2, fontWeight: "bold" }}
       >
         Blog
-      </Typography>
+      </Typography> */}
       <Link href="/Daftar">
         <Typography
           variant="h6"

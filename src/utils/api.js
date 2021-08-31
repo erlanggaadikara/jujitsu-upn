@@ -7,37 +7,29 @@ Axios.defaults.headers.common["Content-Type"] = "application/json";
 
 const csrfToken = async () => {
   const csrf = await Get("/check_csrf/honeybadger");
-  console.log(csrf);
+  return csrf;
 };
 
 export const Get = async (url) => {
-  let send;
-  //   csrfToken();
-  Axios.get(ENDPOINT + url)
-    .then((res) => {
-      console.log(res);
-      if (res.data) {
-        send = res.data;
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      send = null;
-    });
+  const send = await Axios.get(ENDPOINT + url);
 
+  if (send.data) return send.data;
   return send;
 };
 
 export const Post = async (url, data) => {
-  //   csrfToken();
-  let send;
-  Axios.post(ENDPOINT + url, data)
-    .then((res) => {
-      if (res.data) {
-        send = res.data;
-      }
-    })
-    .catch((err) => err && (send = null));
+  const csrf = await csrfToken();
+  console.log(csrf);
+  const send = await Axios({
+    url: ENDPOINT + url,
+    method: "POST",
+    headers: {
+      "X-CSRF-TOKEN": csrf,
+    },
+    data,
+  });
+
+  if (send.data) return send.data;
 
   return send;
 };

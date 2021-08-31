@@ -1,4 +1,4 @@
-import { Box, Typography, Button, CardMedia, Link } from "@material-ui/core";
+import { Box, Typography, Link } from "@material-ui/core";
 
 export default ({ removeDaftar = false }) => {
   return (

@@ -1,9 +1,11 @@
 import "./App.css";
 import Prerender from "component/Prerender";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import { Router, Location } from "@reach/router";
+import { Router } from "@reach/router";
 import { LocalizationProvider } from "@material-ui/lab";
 import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
+import Loading from "component/Loading";
+import Alert from "component/Alert";
 
 const Landing = Prerender(() => import("page/landing"));
 const Daftar = Prerender(() => import("page/form/Daftar"));
@@ -18,6 +20,8 @@ function App() {
           <Daftar path="/Daftar" />
           <Blog path="/Blog/:slug" />
         </Router>
+        <Loading />
+        <Alert />
       </LocalizationProvider>
     </ThemeProvider>
   );
