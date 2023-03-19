@@ -13,7 +13,7 @@ export default observer(() => {
     >
       <Box
         sx={{
-          mx: { mobile: 10, laptop: 20 },
+          mx: { mobile: 5, laptop: 20 },
           my: 10,
           width: { laptop: "50%" },
         }}
@@ -73,11 +73,16 @@ export default observer(() => {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ my: 2, mx: 20, width: { laptop: "50%" } }}>
+      <Box
+        sx={{
+          my: { laptop: 2, mobile: 1 },
+          mx: { laptop: 20 },
+          width: { laptop: "50%" },
+        }}
+      >
         <img
           src="asset/image/favicon.png"
           width={"100%"}
-          height={"85%"}
           alt="logo-jujitsu-upn"
         />
       </Box>
