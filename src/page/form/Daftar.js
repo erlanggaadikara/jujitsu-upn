@@ -163,7 +163,7 @@ export default observer(() => {
           <Typography variant="h6">Mohon lengkapi form berikut</Typography>
           <Box
             sx={{
-              m: 7,
+              m: { laptop: 7, mobile: 1 },
               display: "flex",
               flexDirection: { laptop: "row", mobile: "column" },
               alignItems: "flex-start",
@@ -235,7 +235,7 @@ export default observer(() => {
                   inputFormat="MM/dd/yyyy"
                   value={formik.values.tanggalLahir}
                   onChange={(value) => {
-                    formik.setFieldValue("tanggallahir", value);
+                    formik.setFieldValue("tanggalLahir", value);
                   }}
                   renderInput={(params) => (
                     <TextField
